@@ -57,4 +57,25 @@ public interface MatchRepositorio extends JpaRepository<EntidadMatch, Long> {
     @Query("SELECT m FROM EntidadMatch m WHERE " +
            "m.usuario1Id = :usuarioId OR m.usuario2Id = :usuarioId")
     List<EntidadMatch> buscarMatchesPorUsuarioId(@Param("usuarioId") Long usuarioId);
+    
+    /**
+     * Alias para buscar matches de un usuario (usado por ServicioSocial).
+     * 
+     * @param usuarioId ID del usuario
+     * @return Lista de matches
+     */
+    default List<EntidadMatch> findMatchesByUsuarioId(Long usuarioId) {
+        return buscarMatchesPorUsuarioId(usuarioId);
+    }
+    
+    /**
+     * Alias para verificar si existe match (usado por ServicioSocial).
+     * 
+     * @param usuario1Id ID del primer usuario
+     * @param usuario2Id ID del segundo usuario
+     * @return true si existe match
+     */
+    default boolean existeMatch(Long usuario1Id, Long usuario2Id) {
+        return existeMatchEntreUsuarios(usuario1Id, usuario2Id);
+    }
 }
