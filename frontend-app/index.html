@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Tinder Stand-in - Autenticación</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body id="pagina-auth">
+<header class="app-header">
+    <h1>Tinder Stand-in</h1>
+    <nav>
+        <a href="index.html" class="active">Autenticación</a>
+        <a href="perfiles.html">Perfiles</a>
+        <a href="fotos.html">Fotos</a>
+    </nav>
+</header>
+
+<main class="layout-grid">
+    <section class="card">
+        <h2>Registro</h2>
+        <form id="form-registro" class="form-column">
+            <label>Nombre completo
+                <input type="text" name="nombreCompleto" required />
+            </label>
+            <label>Email
+                <input type="email" name="email" required />
+            </label>
+            <label>Teléfono
+                <input type="text" name="telefono" />
+            </label>
+            <label>Usuario
+                <input type="text" name="username" required />
+            </label>
+            <label>Contraseña
+                <input type="password" name="password" required />
+            </label>
+            <label>Confirmar contraseña
+                <input type="password" name="confirmPassword" required />
+            </label>
+            <button type="submit" class="btn-primary">Registrarse</button>
+        </form>
+        <div id="mensaje-registro" class="mensaje"></div>
+    </section>
+
+    <section class="card">
+        <h2>Login</h2>
+        <form id="form-login" class="form-column">
+            <label>Usuario
+                <input type="text" name="username" required />
+            </label>
+            <label>Contraseña
+                <input type="password" name="password" required />
+            </label>
+            <button type="submit" class="btn-secondary">Iniciar sesión</button>
+        </form>
+        <div id="mensaje-login" class="mensaje"></div>
+        <div id="info-usuario" class="card-info oculto"></div>
+    </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

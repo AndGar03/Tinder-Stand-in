@@ -1,0 +1,3 @@
+Base de datos: tinderstandin_db
+Usuario: tinder_user
+Contraseña: TinderPass2024!

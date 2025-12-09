@@ -31,4 +31,12 @@ public interface LikeRepositorio extends JpaRepository<EntidadLike, Long> {
      * @return Optional con el like si existe
      */
     Optional<EntidadLike> findByUsuarioOrigenIdAndUsuarioDestinoId(Long usuarioOrigenId, Long usuarioDestinoId);
+    
+    /**
+     * Obtiene todos los likes recibidos por un usuario.
+     *
+     * @param usuarioDestinoId ID del usuario que recibe likes
+     * @return Lista de likes recibidos
+     */
+    java.util.List<EntidadLike> findByUsuarioDestinoId(Long usuarioDestinoId);
 }

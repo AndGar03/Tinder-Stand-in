@@ -1,0 +1,51 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api/usuarios
+
+spring:
+  application:
+    name: ms-usuarios
+  
+  # Configuración de la base de datos (ajusta según tu entorno)
+  datasource:
+    url: jdbc:mysql://localhost:3306/tinder_standin?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+
+# Configuración de JWT
+jwt:
+  secret: tinderStandInSecretKey2025#@!$%^&*()
+  expiration: 86400000 # 24 horas en milisegundos
+
+# Configuración de correo electrónico (ajusta según tu configuración)
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: tu-email@gmail.com
+    password: tu-contraseña
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+# Configuración de Eureka (opcional, si usas servicio de descubrimiento)
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true

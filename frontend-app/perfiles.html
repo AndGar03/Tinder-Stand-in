@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Tinder Stand-in - Perfiles</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body id="pagina-perfiles">
+<header class="app-header">
+    <h1>Tinder Stand-in</h1>
+    <nav>
+        <a href="index.html">Autenticación</a>
+        <a href="perfiles.html" class="active">Perfiles</a>
+        <a href="fotos.html">Fotos</a>
+    </nav>
+</header>
+
+<main class="layout-grid">
+    <section class="card">
+        <h2>Enviar Like</h2>
+        <form id="form-like" class="form-column">
+            <label>ID usuario origen
+                <input type="number" name="usuarioOrigenId" required />
+            </label>
+            <label>ID usuario destino
+                <input type="number" name="usuarioDestinoId" required />
+            </label>
+            <button type="submit" class="btn-primary">Enviar Like</button>
+        </form>
+        <div id="mensaje-like" class="mensaje"></div>
+    </section>
+
+    <section class="card">
+        <h2>Matches de un usuario</h2>
+        <form id="form-matches" class="form-row">
+            <input type="number" name="usuarioId" placeholder="ID usuario" required />
+            <button type="submit" class="btn-secondary">Ver matches</button>
+        </form>
+        <div id="lista-matches" class="lista-items"></div>
+    </section>
+
+    <section class="card">
+        <h2>Likes recibidos</h2>
+        <form id="form-likes-recibidos" class="form-row">
+            <input type="number" name="usuarioId" placeholder="ID usuario" required />
+            <button type="submit" class="btn-secondary">Ver likes recibidos</button>
+        </form>
+        <div id="lista-likes" class="lista-items"></div>
+    </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

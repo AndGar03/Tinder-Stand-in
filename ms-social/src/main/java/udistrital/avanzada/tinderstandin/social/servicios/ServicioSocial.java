@@ -70,7 +70,7 @@ public class ServicioSocial {
         boolean esMatch = false;
         if (existeLikeReciproco) {
             // Verificar que no exista ya un match
-            boolean existeMatch = matchRepositorio.existeMatch(usuarioOrigenId, usuarioDestinoId);
+            boolean existeMatch = matchRepositorio.existeMatchEntreUsuarios(usuarioOrigenId, usuarioDestinoId);
             if (!existeMatch) {
                 crearMatch(usuarioOrigenId, usuarioDestinoId);
                 esMatch = true;
@@ -112,7 +112,7 @@ public class ServicioSocial {
     public List<MatchResponseDTO> obtenerMatchesDeUsuario(Long usuarioId) {
         log.info("Obteniendo matches del usuario: {}", usuarioId);
         
-        List<EntidadMatch> matches = matchRepositorio.findMatchesByUsuarioId(usuarioId);
+        List<EntidadMatch> matches = matchRepositorio.buscarMatchesPorUsuarioId(usuarioId);
         
         return matches.stream().map(match -> {
             MatchResponseDTO dto = new MatchResponseDTO();

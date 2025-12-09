@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Tinder Stand-in - Fotos</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body id="pagina-fotos">
+<header class="app-header">
+    <h1>Tinder Stand-in</h1>
+    <nav>
+        <a href="index.html">Autenticación</a>
+        <a href="perfiles.html">Perfiles</a>
+        <a href="fotos.html" class="active">Fotos</a>
+    </nav>
+</header>
+
+<main class="layout-grid">
+    <section class="card">
+        <h2>Agregar foto</h2>
+        <form id="form-foto" class="form-column">
+            <label>ID usuario
+                <input type="number" name="usuarioId" required />
+            </label>
+            <label>URL de la foto
+                <input type="url" name="url" required />
+            </label>
+            <button type="submit" class="btn-primary">Guardar foto</button>
+        </form>
+        <div id="mensaje-foto" class="mensaje"></div>
+    </section>
+
+    <section class="card">
+        <h2>Fotos de un usuario</h2>
+        <form id="form-fotos-usuario" class="form-row">
+            <input type="number" name="usuarioId" placeholder="ID usuario" required />
+            <button type="submit" class="btn-secondary">Ver fotos</button>
+        </form>
+        <div id="galeria-fotos" class="galeria"></div>
+    </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
