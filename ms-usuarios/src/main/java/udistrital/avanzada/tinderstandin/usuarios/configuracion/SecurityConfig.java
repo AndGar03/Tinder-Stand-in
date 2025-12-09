@@ -17,7 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import udistrital.avanzada.tinderstandin.usuarios.seguridad.JwtAuthenticationEntryPoint;
+import udistrital.avanzada.tinderstandin.usuarios.seguridad.PuntoDeEntradaJwt;
 import udistrital.avanzada.tinderstandin.usuarios.seguridad.JwtAuthenticationFilter;
 import udistrital.avanzada.tinderstandin.usuarios.servicios.UserDetailsServiceImpl;
 
@@ -30,7 +30,7 @@ public class SecurityConfig {
     private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    private JwtAuthenticationEntryPoint unauthorizedHandler;
+    private PuntoDeEntradaJwt puntoDeEntradaJwt;
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
@@ -60,7 +60,7 @@ public class SecurityConfig {
         http
             .cors(withDefaults())
             .csrf(csrf -> csrf.disable())
-            .exceptionHandling(ex -> ex.authenticationEntryPoint(unauthorizedHandler))
+            .exceptionHandling(ex -> ex.authenticationEntryPoint(puntoDeEntradaJwt))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll()

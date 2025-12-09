@@ -18,6 +18,7 @@ import udistrital.avanzada.tinderstandin.usuarios.repositorios.UsuarioRepositori
 import udistrital.avanzada.tinderstandin.usuarios.seguridad.JwtUtils;
 import udistrital.avanzada.tinderstandin.usuarios.seguridad.UsuarioPrincipal;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -45,10 +46,10 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginDTO loginDTO) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
+                new UsernamePasswordAuthenticationToken(loginDTO.getUsernameOrEmail(), loginDTO.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
+        String jwt = jwtUtils.generarTokenJwt(authentication);
         
         UsuarioPrincipal userDetails = (UsuarioPrincipal) authentication.getPrincipal();        
         List<String> roles = userDetails.getAuthorities().stream()
@@ -72,33 +73,20 @@ public class AuthController {
         }
 
         // Crear nuevo usuario
-        Usuario usuario = new Usuario(
-                registroDTO.getNombre(),
-                registroDTO.getEmail(),
-                passwordEncoder.encode(registroDTO.getPassword()));
+        Usuario usuario = new Usuario();
+        usuario.setNombre(registroDTO.getNombre());
+        usuario.setApellido(registroDTO.getApellido());
+        usuario.setEmail(registroDTO.getEmail());
+        usuario.setFechaNacimiento(LocalDate.parse(registroDTO.getFechaNacimiento()));
+        usuario.setTelefono(registroDTO.getTelefono());
+        usuario.setUsername(registroDTO.getUsername());
+        usuario.setPassword(passwordEncoder.encode(registroDTO.getPassword()));
 
-        Set<String> strRoles = registroDTO.getRoles();
         Set<Rol> roles = new HashSet<>();
 
-        if (strRoles == null) {
-            Rol rolUsuario = rolRepositorio.findByNombre("ROLE_USUARIO")
-                    .orElseThrow(() -> new RuntimeException("Error: Rol no encontrado."));
-            roles.add(rolUsuario);
-        } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "admin":
-                        Rol rolAdmin = rolRepositorio.findByNombre("ROLE_ADMIN")
-                                .orElseThrow(() -> new RuntimeException("Error: Rol no encontrado."));
-                        roles.add(rolAdmin);
-                        break;
-                    default:
-                        Rol rolUsuario = rolRepositorio.findByNombre("ROLE_USUARIO")
-                                .orElseThrow(() -> new RuntimeException("Error: Rol no encontrado."));
-                        roles.add(rolUsuario);
-                }
-            });
-        }
+        Rol rolUsuario = rolRepositorio.findByNombre(Rol.RolNombre.ROLE_USUARIO)
+                .orElseThrow(() -> new RuntimeException("Error: Rol no encontrado."));
+        roles.add(rolUsuario);
 
         usuario.setRoles(roles);
         usuarioRepositorio.save(usuario);

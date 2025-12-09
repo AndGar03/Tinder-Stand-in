@@ -1,0 +1,11 @@
+udistrital\avanzada\tinderstandin\social\servicios\ServicioSocial.class
+udistrital\avanzada\tinderstandin\social\repositorios\LikeRepositorio.class
+udistrital\avanzada\tinderstandin\social\dto\MensajeRespuesta.class
+udistrital\avanzada\tinderstandin\social\dto\LikeResponseDTO.class
+udistrital\avanzada\tinderstandin\social\modelos\EntidadMatch.class
+udistrital\avanzada\tinderstandin\social\dto\MatchResponseDTO.class
+udistrital\avanzada\tinderstandin\social\modelos\EntidadLike.class
+udistrital\avanzada\tinderstandin\social\dto\CrearLikeDTO.class
+udistrital\avanzada\tinderstandin\social\MsSocialApplication.class
+udistrital\avanzada\tinderstandin\social\repositorios\MatchRepositorio.class
+udistrital\avanzada\tinderstandin\social\controladores\ControladorSocial.class

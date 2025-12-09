@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import udistrital.avanzada.tinderstandin.usuarios.entidades.UsuarioPrincipal;
+import udistrital.avanzada.tinderstandin.usuarios.seguridad.UsuarioPrincipal;
 
 import java.security.Key;
 import java.util.Date;

@@ -1,0 +1,9 @@
+udistrital\avanzada\tinderstandin\multimedia\controladores\ControladorFoto.class
+udistrital\avanzada\tinderstandin\multimedia\modelos\EntidadFoto.class
+udistrital\avanzada\tinderstandin\multimedia\servicios\ServicioFotoImpl.class
+udistrital\avanzada\tinderstandin\multimedia\dto\CrearFotoDTO.class
+udistrital\avanzada\tinderstandin\multimedia\dto\MensajeRespuesta.class
+udistrital\avanzada\tinderstandin\multimedia\dto\FotoResponseDTO.class
+udistrital\avanzada\tinderstandin\multimedia\MsMultimediaApplication.class
+udistrital\avanzada\tinderstandin\multimedia\servicios\ServicioFoto.class
+udistrital\avanzada\tinderstandin\multimedia\repositorios\RepositorioFoto.class

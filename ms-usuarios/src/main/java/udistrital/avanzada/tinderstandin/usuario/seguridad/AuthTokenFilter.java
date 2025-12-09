@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import udistrital.avanzada.tinderstandin.usuario.servicios.ServicioDetallesUsuario;
 
 /**
  * Filtro para la autenticación con JWT.
@@ -27,7 +28,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private JwtUtils jwtUtils;
 
     @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+    private ServicioDetallesUsuario servicioDetallesUsuario;
 
     private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
 
@@ -39,7 +40,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             if (jwt != null && jwtUtils.validarTokenJWT(jwt)) {
                 String username = jwtUtils.obtenerUsernameDeTokenJWT(jwt);
 
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                UserDetails userDetails = servicioDetallesUsuario.loadUserByUsername(username);
                 
                 UsernamePasswordAuthenticationToken authentication = 
                     new UsernamePasswordAuthenticationToken(
