@@ -45,18 +45,26 @@
         setMensaje("mensaje-registro", "Enviando registro...", "");
 
         const body = formToJson(formRegistro);
+        console.log("[registro] body form", body);
         if (body.password !== body.confirmPassword) {
           setMensaje("mensaje-registro", "Las contraseñas no coinciden", "error");
           return;
         }
 
+        const fechaNacimientoValor = body.fechaNacimiento || document.querySelector('#form-registro input[name="fechaNacimiento"]').value;
+
         const payload = {
-          nombreCompleto: body.nombreCompleto,
+          nombre: body.nombre,
+          apellido: body.apellido,
           email: body.email,
-          telefono: body.telefono,
           username: body.username,
           password: body.password,
+          confirmPassword: body.confirmPassword,
+          telefono: body.telefono && body.telefono.trim() !== "" ? body.telefono : null,
+          fechaNacimiento: fechaNacimientoValor,
         };
+
+        console.log("[registro] payload", payload);
 
         try {
           const res = await fetchJson(`${BASE_USUARIOS}/api/auth/registro`, {

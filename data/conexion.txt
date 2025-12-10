@@ -1,5 +1,5 @@
 Base de datos: tinderstandin_db
 Host: localhost
 Puerto: 3306
-Usuario: tinder_user
-Contraseña: TinderPass2024!
+Usuario: root
+Contraseña: TomateRojo

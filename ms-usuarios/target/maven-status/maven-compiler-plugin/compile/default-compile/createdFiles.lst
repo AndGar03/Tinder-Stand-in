@@ -1,5 +1,4 @@
 udistrital\avanzada\tinderstandin\usuario\dto\LoginRequest.class
-udistrital\avanzada\tinderstandin\usuario\config\SecurityConfig.class
 udistrital\avanzada\tinderstandin\usuarios\dto\JwtResponse.class
 udistrital\avanzada\tinderstandin\usuarios\entidades\Rol.class
 udistrital\avanzada\tinderstandin\usuario\MsUsuariosApplication.class
@@ -7,6 +6,7 @@ udistrital\avanzada\tinderstandin\usuario\seguridad\UserDetailsImpl.class
 udistrital\avanzada\tinderstandin\usuarios\seguridad\PuntoDeEntradaJwt.class
 udistrital\avanzada\tinderstandin\usuarios\entidades\Usuario.class
 udistrital\avanzada\tinderstandin\usuarios\MsUsuariosApplication.class
+udistrital\avanzada\tinderstandin\usuario\config\CorsFilter.class
 udistrital\avanzada\tinderstandin\usuario\modelos\EntidadRol.class
 udistrital\avanzada\tinderstandin\usuario\servicios\interfaces\ServicioAutenticacion.class
 udistrital\avanzada\tinderstandin\usuarios\configuracion\SecurityConfig.class
