@@ -23,13 +23,7 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
 
-# Configuración de JWT
-jwt:
-  secret: tinderStandInSecretKey2025#@!$%^&*()
-  expiration: 86400000 # 24 horas en milisegundos
-
-# Configuración de correo electrónico (ajusta según tu configuración)
-spring:
+  # Configuración de correo electrónico
   mail:
     host: smtp.gmail.com
     port: 587
@@ -41,6 +35,11 @@ spring:
           auth: true
           starttls:
             enable: true
+
+# Configuración de JWT
+jwt:
+  secret: tinderStandInSecretKey2025#@!$%^&*()
+  expiration: 86400000 # 24 horas en milisegundos
 
 # Configuración de Eureka (opcional, si usas servicio de descubrimiento)
 eureka:
