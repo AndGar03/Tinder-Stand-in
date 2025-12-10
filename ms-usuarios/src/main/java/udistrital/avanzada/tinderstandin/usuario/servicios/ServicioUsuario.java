@@ -84,11 +84,11 @@ public class ServicioUsuario {
             );
         }
         
-        // Crear usuario (password en texto plano para entorno escolar)
+        // Crear usuario. La contraseña se procesa a través del PasswordEncoder configurado.
         EntidadUsuario usuario = new EntidadUsuario();
         usuario.setUsername(registroRequest.getUsername());
         usuario.setEmail(registroRequest.getEmail());
-        usuario.setPassword(registroRequest.getPassword());
+        usuario.setPassword(passwordEncoder.encode(registroRequest.getPassword()));
         usuario.setNombreCompleto(registroRequest.getNombreCompleto());
         usuario.setTelefono(registroRequest.getTelefono());
         usuario.setGenero(registroRequest.getGenero());

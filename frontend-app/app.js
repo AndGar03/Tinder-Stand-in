@@ -45,7 +45,6 @@
         setMensaje("mensaje-registro", "Enviando registro...", "");
 
         const body = formToJson(formRegistro);
-        console.log("[registro] body form", body);
         if (body.password !== body.confirmPassword) {
           setMensaje("mensaje-registro", "Las contraseñas no coinciden", "error");
           return;
@@ -63,8 +62,6 @@
           fechaNacimiento: fechaNacimientoValor,
         };
 
-        console.log("[registro] payload", payload);
-
         try {
           const res = await fetchJson(`${BASE_USUARIOS}/api/auth/registro`, {
             method: "POST",
@@ -72,8 +69,20 @@
             body: JSON.stringify(payload),
           });
 
-          if (res.ok) {
-            setMensaje("mensaje-registro", "Usuario registrado exitosamente", "ok");
+          if (res.ok && res.data) {
+            const datos = res.data;
+            const mensaje = datos.mensaje || "Usuario registrado exitosamente";
+            setMensaje("mensaje-registro", mensaje, "ok");
+
+            const resumen = document.getElementById("registro-resumen");
+            if (resumen) {
+              resumen.classList.remove("oculto");
+              resumen.innerHTML =
+                `<p><strong>ID asignado:</strong> ${datos.id}</p>` +
+                `<p><strong>Usuario:</strong> ${datos.username}</p>` +
+                `<p><strong>Contraseña:</strong> ${datos.password}</p>`;
+            }
+
             formRegistro.reset();
           } else {
             const msg = res.data && res.data.mensaje
@@ -128,10 +137,159 @@
     }
   }
 
+  let swipingEstado = {
+    usuarioActualId: null,
+    likesRecibidos: [],
+    indiceActual: 0,
+  };
+
+  async function cargarLikesParaSwiping(usuarioId) {
+    setMensaje("mensaje-swiping", "Cargando perfiles...", "");
+    const res = await fetchJson(`${BASE_SOCIAL}/api/social/likes/recibidos/${usuarioId}`);
+    if (!res.ok || !Array.isArray(res.data) || res.data.length === 0) {
+      setMensaje("mensaje-swiping", "No hay perfiles disponibles para swiping", "error");
+      const tarjeta = document.getElementById("tarjeta-swiping");
+      if (tarjeta) {
+        tarjeta.classList.add("oculto");
+      }
+      swipingEstado.likesRecibidos = [];
+      swipingEstado.indiceActual = 0;
+      return;
+    }
+    swipingEstado.usuarioActualId = usuarioId;
+    swipingEstado.likesRecibidos = res.data;
+    swipingEstado.indiceActual = 0;
+    await mostrarPerfilActual();
+  }
+
+  async function mostrarPerfilActual() {
+    const tarjeta = document.getElementById("tarjeta-swiping");
+    if (!tarjeta) return;
+
+    if (!swipingEstado.likesRecibidos.length || swipingEstado.indiceActual >= swipingEstado.likesRecibidos.length) {
+      tarjeta.classList.add("oculto");
+      setMensaje("mensaje-swiping", "Has revisado todos los perfiles", "ok");
+      return;
+    }
+
+    const like = swipingEstado.likesRecibidos[swipingEstado.indiceActual];
+    const usuarioDestinoId = like.usuarioOrigenId;
+
+    try {
+      const resUsuario = await fetchJson(`${BASE_USUARIOS}/api/auth/usuario/${usuarioDestinoId}`);
+      if (!resUsuario.ok || !resUsuario.data) {
+        setMensaje("mensaje-swiping", "No se pudo cargar el perfil", "error");
+        return;
+      }
+      const u = resUsuario.data;
+      tarjeta.classList.remove("oculto");
+      const nombre = document.getElementById("swipe-nombre");
+      const bio = document.getElementById("swipe-bio");
+      const ciudad = document.getElementById("swipe-ciudad");
+      const email = document.getElementById("swipe-email");
+      const fotosContainer = document.getElementById("swipe-fotos");
+
+      if (nombre) nombre.textContent = u.nombreCompleto || `Usuario #${u.id}`;
+      if (bio) bio.textContent = u.descripcion || "Sin descripción";
+      if (ciudad) ciudad.textContent = u.ciudad ? `Ciudad: ${u.ciudad}` : "";
+      if (email) email.textContent = u.email ? `Email: ${u.email}` : "";
+
+      // Cargar fotos desde ms-multimedia. Si no hay fotos o falla, dejamos el contenedor vacío.
+      if (fotosContainer) {
+        fotosContainer.innerHTML = "";
+        try {
+          const resFotos = await fetchJson(
+            `${BASE_MULTIMEDIA}/api/fotos/usuario/${usuarioDestinoId}`
+          );
+          if (resFotos.ok && Array.isArray(resFotos.data) && resFotos.data.length > 0) {
+            resFotos.data.forEach((f) => {
+              const img = document.createElement("img");
+              img.src = f.url;
+              img.alt = `Foto de ${u.nombreCompleto || "usuario"}`;
+              fotosContainer.appendChild(img);
+            });
+          }
+        } catch (e) {
+          // Ignoramos errores de fotos; el swiping funciona igual solo con texto.
+        }
+      }
+
+      setMensaje("mensaje-swiping", "", "");
+    } catch (e) {
+      setMensaje("mensaje-swiping", "Error al obtener el perfil", "error");
+    }
+  }
+
+  async function procesarAccionSwiping(tipoAccion) {
+    if (!swipingEstado.likesRecibidos.length || swipingEstado.indiceActual >= swipingEstado.likesRecibidos.length) {
+      return;
+    }
+    const likeActual = swipingEstado.likesRecibidos[swipingEstado.indiceActual];
+    const usuarioDestinoId = likeActual.usuarioOrigenId;
+
+    if (tipoAccion === "like") {
+      try {
+        const res = await fetchJson(
+          `${BASE_SOCIAL}/api/social/likes?usuarioOrigenId=${swipingEstado.usuarioActualId}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ usuarioDestinoId }),
+          }
+        );
+        if (res.ok) {
+          setMensaje("mensaje-swiping", "Like registrado", "ok");
+        } else {
+          setMensaje("mensaje-swiping", "No se pudo registrar el like", "error");
+        }
+      } catch (e) {
+        setMensaje("mensaje-swiping", "Error de conexión con ms-social", "error");
+      }
+    } else {
+      // Dislike: solo avanzar sin registrar nada en el backend
+      setMensaje("mensaje-swiping", "Perfil descartado", "");
+    }
+
+    swipingEstado.indiceActual += 1;
+    await mostrarPerfilActual();
+  }
+
   function initPerfilesPage() {
     const formLike = document.getElementById("form-like");
     const formMatches = document.getElementById("form-matches");
     const formLikesRecibidos = document.getElementById("form-likes-recibidos");
+
+    const btnIniciarSwiping = document.getElementById("btn-iniciar-swiping");
+    const btnSwipeLike = document.getElementById("btn-swipe-like");
+    const btnSwipeDislike = document.getElementById("btn-swipe-dislike");
+
+    if (btnIniciarSwiping) {
+      btnIniciarSwiping.addEventListener("click", async () => {
+        const inputId = document.getElementById("swipe-usuario-id");
+        if (!inputId || !inputId.value) {
+          setMensaje("mensaje-swiping", "Debes indicar tu ID de usuario", "error");
+          return;
+        }
+        const usuarioId = Number(inputId.value);
+        if (!Number.isFinite(usuarioId) || usuarioId <= 0) {
+          setMensaje("mensaje-swiping", "ID de usuario inválido", "error");
+          return;
+        }
+        await cargarLikesParaSwiping(usuarioId);
+      });
+    }
+
+    if (btnSwipeLike) {
+      btnSwipeLike.addEventListener("click", () => {
+        procesarAccionSwiping("like");
+      });
+    }
+
+    if (btnSwipeDislike) {
+      btnSwipeDislike.addEventListener("click", () => {
+        procesarAccionSwiping("dislike");
+      });
+    }
 
     if (formLike) {
       formLike.addEventListener("submit", async (e) => {

@@ -19,7 +19,9 @@ import udistrital.avanzada.tinderstandin.usuario.seguridad.JwtUtils;
 import udistrital.avanzada.tinderstandin.usuario.seguridad.UserDetailsImpl;
 import udistrital.avanzada.tinderstandin.usuario.servicios.ServicioUsuario;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -94,9 +96,15 @@ public class ControladorAutenticacion {
         try {
             EntidadUsuario usuarioRegistrado = servicioUsuario.registrarUsuario(registroRequest);
             log.info("Usuario registrado exitosamente: {}", usuarioRegistrado.getUsername());
+
+            Map<String, Object> respuesta = new HashMap<>();
+            respuesta.put("mensaje", "Usuario registrado exitosamente");
+            respuesta.put("id", usuarioRegistrado.getId());
+            respuesta.put("username", usuarioRegistrado.getUsername());
+            // En entorno escolar se devuelve la contraseña enviada, almacenada en texto plano
+            respuesta.put("password", registroRequest.getPassword());
             
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new MensajeRespuesta("Usuario registrado exitosamente"));
+            return ResponseEntity.status(HttpStatus.CREATED).body(respuesta);
         } catch (RuntimeException e) {
             log.error("Error al registrar usuario: {}", e.getMessage());
             return ResponseEntity.badRequest()

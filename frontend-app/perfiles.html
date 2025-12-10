@@ -17,7 +17,29 @@
 
 <main class="layout-grid">
     <section class="card">
-        <h2>Enviar Like</h2>
+        <h2>Swiping de Perfiles</h2>
+        <div class="form-row">
+            <input type="number" id="swipe-usuario-id" placeholder="Tu ID de usuario" />
+            <button type="button" id="btn-iniciar-swiping" class="btn-primary">Iniciar</button>
+        </div>
+        <div id="tarjeta-swiping" class="tarjeta-swiping oculto">
+            <div class="tarjeta-contenido">
+                <h3 id="swipe-nombre"></h3>
+                <div id="swipe-fotos" class="swipe-fotos"></div>
+                <p id="swipe-bio"></p>
+                <p id="swipe-ciudad"></p>
+                <p id="swipe-email"></p>
+            </div>
+            <div class="tarjeta-acciones">
+                <button type="button" id="btn-swipe-dislike" class="btn-secondary">Dislike</button>
+                <button type="button" id="btn-swipe-like" class="btn-primary">Like</button>
+            </div>
+        </div>
+        <div id="mensaje-swiping" class="mensaje"></div>
+    </section>
+
+    <section class="card">
+        <h2>Enviar Like (formulario clásico)</h2>
         <form id="form-like" class="form-column">
             <label>ID usuario origen
                 <input type="number" name="usuarioOrigenId" required />
