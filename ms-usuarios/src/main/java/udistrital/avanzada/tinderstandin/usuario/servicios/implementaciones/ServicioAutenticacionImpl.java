@@ -50,6 +50,7 @@ public class ServicioAutenticacionImpl implements ServicioAutenticacion {
 
     @Override
     public JwtResponse autenticarUsuario(LoginRequest loginRequest) {
+        // Con NoOpPasswordEncoder, AuthenticationManager comparará texto plano directamente
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
                 loginRequest.getUsername(),
@@ -91,7 +92,7 @@ public class ServicioAutenticacionImpl implements ServicioAutenticacion {
             registroRequest.getEmail(),
             registroRequest.getTelefono(),
             registroRequest.getUsername(),
-            passwordEncoder.encode(registroRequest.getPassword())
+            registroRequest.getPassword() // texto plano para entorno escolar
         );
 
         Set<EntidadRol> roles = new HashSet<>();

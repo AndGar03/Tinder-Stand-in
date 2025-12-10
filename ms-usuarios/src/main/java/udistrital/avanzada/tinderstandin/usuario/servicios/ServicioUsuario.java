@@ -32,8 +32,9 @@ public class ServicioUsuario {
     private final JavaMailSender mailSender;
     
     // Expresión regular para validación de contraseña
+    // Debe coincidir con la usada en RegistroRequest (@Pattern)
     private static final Pattern PASSWORD_PATTERN = Pattern.compile(
-        "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&.])[A-Za-z\\d@$!%*?&.]{8,}$"
+        "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*])(?=\\S+$).{8,}$"
     );
     
     /**
@@ -75,19 +76,19 @@ public class ServicioUsuario {
             throw new RuntimeException("El email ya está registrado");
         }
         
-        // Validar contraseña
+        // Validar contraseña (mismas reglas que en RegistroRequest)
         if (!validarPassword(registroRequest.getPassword())) {
             throw new RuntimeException(
                 "La contraseña debe tener al menos 8 caracteres, " +
-                "1 mayúscula, 1 minúscula, 1 número y 1 carácter especial (@$!%*?&.)"
+                "1 mayúscula, 1 minúscula, 1 número y 1 carácter especial (@#$%^&+=!*)"
             );
         }
         
-        // Crear usuario
+        // Crear usuario (password en texto plano para entorno escolar)
         EntidadUsuario usuario = new EntidadUsuario();
         usuario.setUsername(registroRequest.getUsername());
         usuario.setEmail(registroRequest.getEmail());
-        usuario.setPassword(passwordEncoder.encode(registroRequest.getPassword()));
+        usuario.setPassword(registroRequest.getPassword());
         usuario.setNombreCompleto(registroRequest.getNombreCompleto());
         usuario.setTelefono(registroRequest.getTelefono());
         usuario.setGenero(registroRequest.getGenero());

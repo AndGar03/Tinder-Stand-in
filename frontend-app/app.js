@@ -54,12 +54,11 @@
         const fechaNacimientoValor = body.fechaNacimiento || document.querySelector('#form-registro input[name="fechaNacimiento"]').value;
 
         const payload = {
-          nombre: body.nombre,
-          apellido: body.apellido,
-          email: body.email,
+          // Adaptar al DTO RegistroRequest del backend
+          nombreCompleto: `${body.nombre} ${body.apellido}`.trim(),
           username: body.username,
+          email: body.email,
           password: body.password,
-          confirmPassword: body.confirmPassword,
           telefono: body.telefono && body.telefono.trim() !== "" ? body.telefono : null,
           fechaNacimiento: fechaNacimientoValor,
         };
