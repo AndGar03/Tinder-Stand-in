@@ -1,7 +1,2 @@
-Autores del proyecto Tinder Stand-in
-
-- SanSantax: responsable principal del microservicio ms-usuarios (modelo de dominio Persona/Usuario,
-  lógica de validación de contraseñas y flujo de registro/login, así como envío de correo de bienvenida).
-- AndGar03: responsable principal de los microservicios ms-social (swiping, likes y matches con RestTemplate
-  hacia ms-usuarios), ms-multimedia (gestión de fotos y almacenamiento en disco/MySQL) y la carpeta frontend-app
-  (interfaz HTML/CSS/JS que consume los tres microservicios).
+Daniel Felipe Santamaría Durán - 20242020023
+Carlos Andrés García Ramos - 20242020203
